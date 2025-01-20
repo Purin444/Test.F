@@ -1,0 +1,71 @@
+<aside class="sidebar">
+    <div class="profile">
+        <img src="../assets/image/user_2.png" alt="Profile Picture" class="profile-pic" style="width: 130px; height: auto; padding-top: 3rem;">
+        <h1 style="color: #fff;">Loading...</h1>
+    
+    </div>
+    <ul class="menu-list">
+        <a href="dashboard.html">
+            <button>Dashboard</button>
+        </a>
+        <a href="employeeatt.html">
+            <button>Employee Management</button>
+        </a>
+        <a href="attendance_history.html">
+            <button>Attendance History</button>
+        </a>
+        <a href="salary-processing.html">
+            <button>Salary Processing</button>
+        </a>
+        <a href="calendar.html">
+            <button>Calendar</button>
+        </a>
+        <a href="new_ot_request.html">
+            <button>OT Request</button>
+        </a>
+        <a href="settings.html">
+            <button>Settings</button>
+        </a>
+    </ul>
+    <script>
+        // ฟังก์ชันสำหรับโหลดข้อมูลผู้ใช้
+        function loadUserProfile(userId) {
+    fetch(`http://127.0.0.1:5001/api/auth_users/${userId}`)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Failed to fetch user data: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then((data) => {
+            console.log("User Data:", data);
+            const profilePic = document.querySelector(".profile-pic");
+            const profileName = document.querySelector(".profile h1");
+
+            // ตรวจสอบข้อมูลก่อนอัปเดต
+            if (data && data.username) {
+                console.log("Updating profile name to:", data.username);
+                if (profileName) profileName.textContent = data.username;
+            } else {
+                console.warn("No username found in data");
+                if (profileName) profileName.textContent = "Guest";
+            }
+
+            if (profilePic) {
+                profilePic.src = data.profile_picture || "../assets/image/default.png";
+            }
+        })
+        .catch((error) => {
+            console.error("Error loading user profile:", error);
+            const profileName = document.querySelector(".profile h1");
+            if (profileName) profileName.textContent = "Error Loading Data";
+        });
+}
+
+const loggedInUserId = localStorage.getItem("loggedInUserId") || "676279b692ad44fe4c96e3d7";
+loadUserProfile(loggedInUserId);
+
+
+
+    </script>
+</aside>

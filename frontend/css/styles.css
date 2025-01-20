@@ -1,0 +1,1039 @@
+/* Global Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif; /* Set a clean and universal font */
+    background-color: #f8f9fa; /* Light gray background for better contrast */
+    color: #212529; /* Universal text color */
+    box-sizing: border-box; /* Include padding and border in element's width and height */
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+/* Navbar Styling */
+nav {
+    background: linear-gradient(to right, #4c51bf, #9f7aea, #ed64a6); /* Gradient background */
+    color: #fff; /* White text for navbar */
+    padding: 1rem 0; /* Top and bottom padding for the navbar */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    position: fixed; /* Stick to the top when scrolling */
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+}
+
+.container-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between logo and logout button */
+    width: 100%; /* Use full width */
+    padding: 0 2rem; /* Add padding to both sides */
+}
+
+.logout-btn {
+    background-color: #ff4d4d; /* Red background */
+    color: #fff; /* White text */
+    border: none; /* Remove default border */
+    padding: 0.5rem 1rem; /* Add padding */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+}
+
+.logout-btn:hover {
+    background-color: #e63946; /* Darker red on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.logo-bar {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    max-width: 100px;
+    height: auto;
+    transition: transform 0.3s ease; /* Smooth animation on hover */
+}
+
+.logo:hover {
+    transform: scale(1.1); /* Slightly enlarge the logo on hover */
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 250px;
+    background-color: #343a40; /* Dark gray background for sidebar */
+    height: 100vh; /* Full height of viewport */
+    position: fixed; /* Fixed position for sidebar */
+    top: 0;
+    left: 0;
+    padding: 2rem 1rem; /* Add some padding */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    color: #fff; /* White text color */
+    overflow-y: auto; /* Add scrolling for long content */
+}
+
+.profile {
+    text-align: center;
+    margin-bottom: 2rem; /* Space below the profile section */
+}
+
+.profile-pic {
+    border-radius: 50%; /* Make the image circular */
+    max-width: 130px;
+    height: auto;
+    margin-bottom: 1rem; /* Space below the picture */
+    transition: transform 0.3s ease; /* Smooth animation */
+}
+
+.profile-pic:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.profile h1 {
+    color: #fff;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.menu-list {
+    list-style-type: none; /* Remove default list styles */
+    padding: 0;
+    margin: 0;
+}
+
+.menu-list a {
+    text-decoration: none; /* Remove underline from links */
+    display: block; /* Make the links block-level for better spacing */
+    margin-bottom: 1rem; /* Add space between buttons */
+    color: #adb5bd; /* Lighter text color */
+    transition: color 0.3s ease;
+}
+
+.menu-list a:hover {
+    color: #fff; /* Highlight on hover */
+}
+
+.menu-list button {
+    background: none; /* No background for buttons */
+    color: inherit; /* Inherit color from parent */
+    border: 2px solid transparent; /* Invisible border */
+    padding: 0.75rem 1rem; /* Add padding */
+    border-radius: 5px; /* Rounded corners */
+    width: 100%; /* Full width */
+    text-align: left; /* Align text to the left */
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth hover effect */
+}
+
+.menu-list button:hover {
+    border-color: #007bff; /* Highlight border on hover */
+    background-color: rgba(0, 123, 255, 0.1); /* Subtle background highlight */
+}
+
+/* Content Area */
+main {
+    margin-left: 250px; /* เลื่อนเนื้อหาออกไปด้านขวาให้ตรงกับขนาด sidebar */
+    padding: 2rem; /* เพิ่มระยะขอบภายใน */
+    padding-top: 4rem; /* เพิ่มระยะห่างด้านบนให้เท่ากับความสูงของ navbar */
+    min-height: 100vh; /* ให้เนื้อหาครอบคลุมเต็มความสูงหน้าจอ */
+    display: block; /* ใช้ block layout สำหรับ main */
+    background: #f8f9fa; /* เพิ่มสีพื้นหลังเพื่อแยกส่วน */
+}
+
+
+
+/* Summary Cards Styling */
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.card {
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 2.0);
+}
+
+.card span {
+    font-size: 0.9rem;
+    font-weight: normal;
+}
+
+.card.blue {
+    background-color: #007bff;
+}
+
+.card.green {
+    background-color: #28a745;
+}
+
+.card.red {
+    background-color: #dc3545;
+}
+
+.card.orange {
+    background-color: #fd7e14;
+}
+
+/* Icon Buttons Styling */
+.container-icon {
+    display: flex;
+    justify-content: flex-end; /* Align icons to the right */
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.container-icon button {
+    background-color: #fff;
+    border: 2px solid #dee2e6;
+    padding: 0.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container-icon button:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.05);
+}
+
+.container-icon button i {
+    font-size: 1.2rem;
+    color: #007bff;
+}
+
+/* Today Section Styling */
+.day-box {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    background-color: #007bff; /* Default blue for Monday */
+    margin-right: 1rem; /* Add spacing from icons */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 0.5rem; /* Push it slightly down */
+    align-self: flex-end; /* Align to the right with icons */
+}
+
+/* Day-Specific Colors */
+.day-box[data-day="Monday"] {
+    background-color: #007bff;
+}
+
+.day-box[data-day="Tuesday"] {
+    background-color: #28a745;
+}
+
+.day-box[data-day="Wednesday"] {
+    background-color: #ffc107;
+}
+
+.day-box[data-day="Thursday"] {
+    background-color: #fd7e14;
+}
+
+.day-box[data-day="Friday"] {
+    background-color: #dc3545;
+}
+
+.day-box[data-day="Saturday"] {
+    background-color: #6f42c1;
+}
+
+.day-box[data-day="Sunday"] {
+    background-color: #17a2b8;
+}
+
+/* Attendance Table Styling */
+.attendance-table-container {
+    margin-top: 2rem;
+    max-height: 450px; /* Set maximum height for the table container */
+    overflow-y: auto; /* Enable vertical scrolling */
+    border: 1px solid #dee2e6; /* Add border to distinguish the container */
+    border-radius: 8px; /* Add rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    background: #fff; /* White background */
+}
+
+.attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.attendance-table th, .attendance-table td {
+    border: 1px solid #dee2e6;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.attendance-table th {
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+} /* Make header sticky when scrolling */
+
+/* OT Section Styling */
+.ot-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.ot-section .ot-requests, .ot-section .accepted-ot-requests {
+    flex: 1;
+    min-width: 300px;
+}
+
+.ot-section table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.ot-section th, .ot-section td {
+    border: 1px solid #dee2e6;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.ot-section th {
+    background-color: #28a745;
+    color: #fff;
+}
+
+/*attendance Filters Styling */
+.filters-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    align-items: flex-end; /* Align items at the bottom */
+    padding: 1rem;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    justify-content: space-between; /* Distribute space between filters and buttons */
+}
+
+
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.filter-item label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #212529;
+    font-size: 1rem;
+}
+
+.filter-item select {
+    padding: 0.6rem;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.filter-item select:hover {
+    border-color: #007bff;
+    background-color: #f8f9fa;
+}
+
+.filter-item select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/*button printsalary*/
+.button-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center; /* Ensure buttons align vertically */
+    margin-top: 0; /* Remove any extra spacing above buttons */
+}
+
+.action-btn {
+    background-color: #4c51bf; /* Indigo background */
+    color: #fff; /* White text */
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#save-salaries-btn {
+    background-color: #28a745; /* Green background */
+}
+
+.action-btn:hover {
+    background-color: #5a67d8; /* Slightly lighter indigo */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.action-btn:active {
+    transform: scale(0.95); /* Slightly shrink on click */
+}
+
+/*OT Form Styling */
+form#otRequestForm {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input[type="date"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button.btn-submit {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button.btn-submit:hover {
+    background-color: #45a049;
+}
+
+/*OT Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+table th,
+table td {
+    text-align: left;
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* ตกแต่ง input fields */
+input[type="text"] {
+    width: 100%; /* ปรับให้เต็มความกว้างของ cell */
+    padding: 8px;
+    margin: 4px 0;
+    box-sizing: border-box;
+    font-size: 14px;
+    border: 2px solid #ccc; /* เส้นขอบ */
+    border-radius: 6px; /* มุมโค้ง */
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* เมื่อ hover */
+input[type="text"]:hover {
+    border-color: #4CAF50; /* เปลี่ยนสีขอบ */
+}
+
+/* เมื่อ focus */
+input[type="text"]:focus {
+    border-color: #4CAF50; /* สีขอบเมื่อคลิก */
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.5); /* เพิ่มเงาสีเขียว */
+    outline: none; /* เอาขอบ default ออก */
+}
+
+/* ตกแต่งปุ่ม Save Departments */
+#saveDepartmentButton {
+    background-color: #4CAF50; /* สีพื้นหลังเขียว */
+    color: white; /* สีตัวอักษร */
+    border: none; /* ไม่มีเส้นขอบ */
+    padding: 10px 20px; /* ระยะห่างด้านใน */
+    text-align: center; /* จัดข้อความให้อยู่กลาง */
+    text-decoration: none; /* ไม่มีเส้นขีดล่าง */
+    display: inline-block; /* แสดงเป็นบล็อก */
+    font-size: 16px; /* ขนาดตัวอักษร */
+    margin: 5px 2px; /* ระยะห่างรอบปุ่ม */
+    cursor: pointer; /* เปลี่ยนเคอร์เซอร์เมื่อชี้ */
+    border-radius: 8px; /* มุมโค้งมน */
+    box-shadow: 0 4px #2E7D32; /* เงาปุ่ม */
+    transition: 0.3s; /* การเปลี่ยนแปลงแบบนุ่มนวล */
+}
+  
+#saveDepartmentButton:hover {
+    background-color: #45a049; /* เปลี่ยนสีเมื่อชี้ */
+    box-shadow: 0 6px #1B5E20; /* เปลี่ยนเงาเมื่อชี้ */
+    animation: shake 0.5s; /* เพิ่มเอฟเฟกต์สั่น */
+}
+  
+#saveDepartmentButton:active {
+    box-shadow: 0 2px #1B5E20; /* เงาตอนกด */
+    transform: translateY(2px); /* ย่อขนาดลงตอนกด */
+}
+  
+  /* ตกแต่งปุ่ม Delete Selected */
+#deleteButton {
+    background-color: #f44336; /* สีพื้นหลังแดง */
+    color: white; /* สีตัวอักษร */
+    border: none; /* ไม่มีเส้นขอบ */
+    padding: 10px 20px; /* ระยะห่างด้านใน */
+    text-align: center; /* จัดข้อความให้อยู่กลาง */
+    text-decoration: none; /* ไม่มีเส้นขีดล่าง */
+    display: inline-block; /* แสดงเป็นบล็อก */
+    font-size: 16px; /* ขนาดตัวอักษร */
+    margin: 5px 2px; /* ระยะห่างรอบปุ่ม */
+    cursor: pointer; /* เปลี่ยนเคอร์เซอร์เมื่อชี้ */
+    border-radius: 8px; /* มุมโค้งมน */
+    box-shadow: 0 4px #C62828; /* เงาปุ่ม */
+    transition: 0.3s; /* การเปลี่ยนแปลงแบบนุ่มนวล */
+}
+  
+#deleteButton:hover {
+    background-color: #e53935; /* เปลี่ยนสีเมื่อชี้ */
+    box-shadow: 0 6px #B71C1C; /* เปลี่ยนเงาเมื่อชี้ */
+    animation: shake 0.5s; /* เพิ่มเอฟเฟกต์สั่น */
+}
+  
+#deleteButton:active {
+    box-shadow: 0 2px #B71C1C; /* เงาตอนกด */
+    transform: translateY(2px); /* ย่อขนาดลงตอนกด */
+}
+  
+/* เอฟเฟกต์สั่น */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+  
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container-bar {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .logo {
+        max-width: 80px; /* Reduce logo size for smaller screens */
+    }
+
+    .sidebar {
+        width: 200px; /* Reduce width for smaller screens */
+    }
+
+    .profile-pic {
+        max-width: 100px; /* Smaller profile picture */
+    }
+
+    .menu-list button {
+        font-size: 0.9rem; /* Slightly smaller font size */
+    }
+
+    main {
+        margin-left: 210px; /* Adjust content area for smaller sidebar */
+    }
+
+    .summary-cards {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .container-icon button {
+        padding: 0.4rem;
+    }
+
+    .container-icon button i {
+        font-size: 1rem;
+    }
+}
+
+
+
+/* Pie */
+/* .summary-charts {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px; 
+    padding: 20px;
+  }
+  
+  .chart-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .chart-item {
+    flex: 1; 
+    max-width: 45%; 
+  }
+  
+  .pie-chart-container,
+  .line-chart-container {
+    max-width: 100%; 
+    margin: 0 auto; 
+  }
+  
+  canvas {
+    width: 100%;
+    height: auto;
+  } */
+
+
+  
+
+/*setting*/
+.settings-form-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-group input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.save-button {
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.save-button:hover {
+    background-color: #0056b3;
+}
+
+
+
+/*attendanc history table*/
+.attendance-log-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.attendance-log-table th, .attendance-log-table td {
+    border: 1px solid #dee2e6;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.attendance-log-table th {
+    background-color: #007bff !important; /* บังคับให้ใช้สีนี้ */
+    color: #fff !important;
+}
+
+/* จัดวางแบบซ้ายขวา */
+.filter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .filter-item {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  .filter-item:last-child {
+    margin-right: 0; /* ไม่ให้ margin ด้านขวาของช่องสุดท้าย */
+  }
+  
+  button#filterButton {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  button#filterButton:hover {
+    background-color: #0056b3;
+  }
+  
+
+ 
+
+/* จัดการส่วน Date Filters */
+.date-filters {
+    display: flex;
+    align-items: center; /* จัดให้อยู่ในแนวเดียวกัน */
+    justify-content: flex-start; /* จัดให้อยู่ชิดซ้าย */
+    gap: 0.5rem; /* ลดระยะห่างระหว่างองค์ประกอบ */
+    margin-bottom: 0.5rem; /* ลดช่องว่างด้านล่าง */
+  }
+  
+  /* ช่องกรอกวันที่ */
+  .date-filters input[type="date"] {
+    padding: 0.25rem;
+    font-size: 0.85rem; /* ลดขนาดตัวอักษร */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 140px; /* ลดความกว้าง */
+  }
+  
+  /* ปรับกลุ่มปุ่ม */
+  .button-group {
+    display: flex;
+    gap: 0.4rem; /* ลดระยะห่างระหว่างปุ่ม */
+    margin-left: auto; /* จัดกลุ่มปุ่มให้อยู่ด้านขวา */
+  }
+  
+  .action-btn {
+    background-color: #4c51bf; /* สีพื้นหลังของปุ่ม */
+    color: #fff;
+    border: none;
+    padding: 0.35rem 0.7rem; /* ลด padding */
+    font-size: 0.8rem; /* ลดขนาดตัวอักษร */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+  }
+  
+  .action-btn:hover {
+    background-color: #5a67d8; /* สีเมื่อ hover */
+  }
+  
+  .action-btn:active {
+    transform: scale(0.95); /* ย่อเมื่อกด */
+  }
+  
+  /* ปุ่ม Save Salaries */
+  #save-salaries-btn {
+    background-color: #28a745; /* สีเขียว */
+  }
+  
+  #save-salaries-btn:hover {
+    background-color: #218838; /* สีเขียวเข้มเมื่อ hover */
+  }
+  
+  /* ช่องกรอก Salary ในตาราง */
+  .salary-input {
+    padding: 0.2rem;
+    font-size: 0.85rem; /* ลดขนาดตัวอักษร */
+    width: 100px; /* จำกัดความกว้าง */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center; /* จัดข้อความให้อยู่กลาง */
+  }
+  
+  /* ตาราง */
+  .table-container {
+    margin-top: 1rem;
+  }
+  
+  .attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  
+  .attendance-table th,
+  .attendance-table td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 0.5rem;
+  }
+  
+  .attendance-table th {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  
+  @media (max-width: 768px) {
+    .date-filters {
+      flex-direction: column; /* เปลี่ยนการจัดวางเป็นแนวตั้ง */
+      gap: 0.8rem;
+      align-items: flex-start; /* จัดให้อยู่ชิดด้านซ้าย */
+    }
+  
+    .button-group {
+      justify-content: flex-start; /* ปุ่มชิดด้านซ้าย */
+    }
+  
+    .date-filters input[type="date"],
+    .button-group .action-btn {
+      width: 100%; /* ให้ช่องกรอกและปุ่มกว้างเต็ม */
+    }
+  }
+  
+
+
+  .add-department {
+    position: relative;
+    text-align: right;
+    margin-bottom: 1rem;
+}
+
+.add-department button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.add-department button:hover {
+    background-color: #0056b3;
+}
+
+/* Popup */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 300px;
+}
+
+.popup-content h3 {
+    margin-bottom: 1rem;
+}
+
+.popup-content input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.popup-buttons button {
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.popup-buttons #addDepartmentButton {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.popup-buttons #addDepartmentButton:hover {
+    background-color: #0056b3;
+}
+
+.popup-buttons #closeAddDepartmentPopup {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.popup-buttons #closeAddDepartmentPopup:hover {
+    background-color: #b02a37;
+}
+
+.hidden {
+    display: none;
+}
+
+
+
+
+
+
+/*charts dashboard*/
+.summary-charts {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* สองคอลัมน์ในแถวบน */
+    grid-template-rows: 300px auto; /* ความสูงแถวบน 300px */
+    gap: 20px;
+    margin-top: 20px;
+    align-items: stretch;
+}
+
+.chart-item {
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 2.0);
+    background-color: #f9f9f9;
+    text-align: center;
+    height: 100%; /* ขยายเต็มพื้นที่ของ grid */
+}
+
+.pie-chart-container canvas,
+.bar-chart-container canvas {
+    max-height: 250px; /* กำหนดความสูงสูงสุดของกราฟ */
+    width: 100%; /* ขยายเต็มพื้นที่ความกว้าง */
+    height: auto; /* ปรับขนาดอัตโนมัติ */
+}
+
+.bar-chart-container {
+    grid-column: 2; /* วางในคอลัมน์ที่ 2 */
+    grid-row: 1; /* วางในแถวแรก */
+}
+
+.line-chart-container {
+    grid-column: 1 / span 2; /* ครอบคลุม 2 คอลัมน์ */
+    grid-row: 2; /* วางในแถวที่สอง */
+}
+
+
+.details-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* แบ่งสองคอลัมน์เท่ากัน */
+    gap: 20px; /* ช่องว่างระหว่างกราฟและตาราง */
+    margin-top: 20px;
+    align-items: stretch; /* ให้ความสูงของทั้งสองส่วนเท่ากัน */
+}
+
+.chart-item,
+.attendance-list {
+    display: flex;
+    flex-direction: column; /* จัดเนื้อหาในแนวตั้ง */
+    justify-content: flex-start; /* ให้เนื้อหาเริ่มจากด้านบน */
+    align-items: stretch;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    height: 100%; /* ให้ตารางมีขนาดเท่ากราฟ */
+    overflow-y: auto; /* เพิ่ม scroll ถ้าข้อมูลยาวเกิน */
+}
+
+.attendance-list h3 {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    text-align: left; /* จัดชิดซ้าย */
+}
+
+.attendance-list table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.attendance-list th, .attendance-list td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.attendance-list th {
+    background-color: #f0f0f0;
+    text-align: left; /* จัดข้อความหัวตารางให้อยู่ด้านซ้าย */
+    font-weight: bold;
+}
+
+.attendance-list tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}

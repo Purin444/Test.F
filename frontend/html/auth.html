@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth System</title>
+    <script src="../js/auth.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <!-- กล่อง Login/Register -->
+    <div class="bg-white p-8 rounded shadow-lg w-full max-w-sm">
+        <h1 id="formTitle" class="text-2xl font-bold text-center mb-4">Login</h1>
+        <!-- กล่อง Alert แจ้งเตือน -->
+        <div id="alert" class="hidden mb-4 text-center"></div>
+
+        <!-- ฟอร์ม Login/Register -->
+        <form id="authForm">
+            <input id="username" type="text" placeholder="Username" class="w-full p-2 mb-4 border rounded" />
+            <input id="password" type="password" placeholder="Password" class="w-full p-2 mb-4 border rounded" />
+            
+            <!-- ช่องสำหรับ Master Key (แสดงเมื่อ Register เท่านั้น) -->
+            <div id="masterKeyWrapper" class="hidden">
+                <input id="masterKey" type="text" placeholder="Master Key" class="w-full p-2 mb-4 border rounded" />
+            </div>
+
+            <button id="submitButton" type="submit" class="w-full bg-blue-500 text-white p-2 rounded">Login</button>
+        </form>
+
+        <!-- ปุ่มสลับ Register -->
+        <p class="text-center mt-4">
+            Don't have an account? 
+            <button id="toggleForm" class="text-blue-500 underline">Register</button>
+        </p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="/frontend/js/logout.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <div id="navbarContainer"></div>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div id="sidebar"></div>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <h2>User Settings</h2>
+            <div class="settings-form-container">
+                <form id="settingsForm" class="settings-form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="oldPassword">Old Password</label>
+                        <input type="password" id="oldPassword" name="oldPassword" placeholder="Enter your old password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" name="newPassword" placeholder="Enter your new password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your new password" required>
+                    </div>
+                    
+
+                   
+
+                    <div class="form-group">
+                        <button type="submit" class="save-button">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById("settingsForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const oldPassword = document.getElementById("oldPassword").value;
+    const newPassword = document.getElementById("newPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    // ตรวจสอบว่ารหัสผ่านใหม่และยืนยันรหัสผ่านตรงกัน
+    if (newPassword !== confirmPassword) {
+        alert("New Password and Confirm Password do not match.");
+        return;
+    }
+
+    const userId = localStorage.getItem("loggedInUserId");
+    fetch(`http://127.0.0.1:5001/api/auth_users/${userId}/change_password`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            oldPassword: oldPassword,
+            newPassword: newPassword,
+        }),
+    })
+        .then((response) => {
+            if (!response.ok) throw new Error("Failed to update user settings");
+            return response.json();
+        })
+        .then((data) => {
+            alert("Password updated successfully!");
+
+            // เคลียร์ค่าของช่องรหัสผ่าน
+            document.getElementById("oldPassword").value = "";
+            document.getElementById("newPassword").value = "";
+            document.getElementById("confirmPassword").value = "";
+        })
+        .catch((error) => {
+            alert("Error updating settings: " + error.message);
+        });
+});
+document.addEventListener("DOMContentLoaded", function () {
+    const userId = localStorage.getItem("loggedInUserId");
+
+    if (userId) {
+        fetch(`http://127.0.0.1:5001/api/auth_users/${userId}`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Failed to fetch user data");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                // เติมข้อมูล username ลงในช่อง input
+                const usernameField = document.getElementById("username");
+                if (data.username) {
+                    usernameField.value = data.username;
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching user data:", error);
+                alert("Failed to load user data");
+            });
+    } else {
+        alert("User ID not found in localStorage");
+    }
+});
+    </script>
+</body>
+</html>

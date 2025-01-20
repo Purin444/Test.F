@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/dashboard.js" defer></script>
+    <script src="/frontend/js/logout.js"></script>
+</head>
+<body>
+   <!-- Navbar -->
+   <div id="navbarContainer"></div>
+    <div class="dashboard-container">
+        <div id="sidebar"></div>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <h2>Daily Attendance Summary Report</h2>
+            <div class="summary-cards">
+                <div class="card blue" id="total-employees">0<br><span>Total Employee</span></div>
+                <div class="card green" id="on-time">0<br><span>On Time</span></div>
+                <div class="card red" id="late">0<br><span>Late</span></div>
+                <div class="card orange" id="absent">0<br><span>Absent</span></div>
+            </div>
+
+            <div class="container-icon">
+                <div class="filter-item">
+                    <span id="currentDay" class="day-box text-gray-700 font-medium"></span>
+                </div>
+                <button onclick="window.location.href='/frontend/html/dashboard.html'"><i class="bi bi-table"></i></button>
+                <button onclick="window.location.href='/frontend/html/piechart.html'"><i class="bi bi-pie-chart"></i></button>
+            </div>
+
+            <table class="attendance-table">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Name</th>
+                        <th>Timestamp</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="attendance-log-table"></tbody>
+            </table>
+            <div class="ot-section">
+                <div class="ot-requests">
+                    <h3>OT Requests</h3>
+                    <table id="otRequestTableSmall">
+                        <thead>
+                            <tr>
+                                <th>Employee Name</th>
+                                <th>Date</th>
+                                <th>Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- ข้อมูลจะถูกเติมจาก JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="accepted-ot-requests">
+                    <h3>Accepted OT Requests</h3>
+                    <table id="acceptedOtRequestTableSmall">
+                        <thead>
+                            <tr>
+                                <th>Employee Name</th>
+                                <th>Date</th>
+                                <th>Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- ข้อมูลจะถูกเติมจาก JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Load Navbar and Sidebar -->
+    
+</body>
+</html>
