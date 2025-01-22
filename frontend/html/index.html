@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome | Time Attendance</title>
+  <style>
+    /* พื้นฐานของหน้า */
+    body {
+      margin: 0;
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #e3f2fd;
+      color: #333;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      transition: background-color 1s, color 1s;
+    }
+
+    .container {
+      text-align: center;
+      z-index: 10; /* ทำให้ข้อความอยู่เหนือคลื่น */
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      font-weight: bold;
+      color: #0056b3;
+      transition: color 1s;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #555;
+      margin-bottom: 30px;
+      transition: color 1s;
+    }
+
+    .btn {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      color: white;
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    /* คลื่น SVG */
+    .wave-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .wave {
+      position: absolute;
+      bottom: 0;
+      width: 300%; /* เพิ่มความกว้างเพื่อลดปัญหาขาด */
+      height: 100%;
+      animation: wave-animation 20s linear infinite;
+    }
+
+    .wave-1 {
+      fill: rgba(0, 123, 255, 0.6); /* สีเดิมในตอนกลางวัน */
+    }
+
+    .wave-2 {
+      fill: rgba(0, 123, 255, 0.4);
+      animation-delay: -10s; /* ให้คลื่นที่สองเลื่อนช้ากว่า */
+    }
+
+    @keyframes wave-animation {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-33.33%); /* สัมพันธ์กับความกว้าง 300% */
+      }
+    }
+
+    /* ดาว */
+.stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1s;
+  z-index: 10; /* เพิ่ม z-index เพื่อให้ดาวอยู่ในตำแหน่งที่เหนือคลื่น */
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background-color: white;
+  border-radius: 50%;
+  animation: twinkle 2s infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+    /* ดวงจันทร์ */
+    .moon {
+      position: absolute;
+      top: 10%;
+      right: 10%;
+      width: 100px;
+      height: 100px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+      opacity: 0;
+      transition: opacity 1s;
+    }
+
+    /* เปลี่ยนธีมกลางวัน/กลางคืน */
+    body.day {
+      background: #e3f2fd;
+    }
+
+    body.night {
+      background: #001d3d;
+    }
+
+    body.night h1, body.night p {
+      color: #fff;
+    }
+
+    body.night .wave-1 {
+      fill: rgba(0, 50, 100, 0.8); /* เปลี่ยนสีคลื่นในตอนกลางคืน */
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* เพิ่มแสงจากดวงจันทร์ */
+    }
+
+    body.night .wave-2 {
+      fill: rgba(0, 0, 50, 0.6);
+    }
+
+    body.night .stars {
+      opacity: 1;
+    }
+
+    body.night .moon {
+      opacity: 1;
+    }
+
+    /* รูปเรือ */
+    .ship {
+      position: absolute;
+      bottom: 50px; /* ปรับให้ต่ำลง */
+      left: -150px; /* เริ่มนอกจอด้านซ้าย */
+      z-index: 1; /* ให้อยู่เหนือคลื่น */
+      width: 100px;
+      animation: sailAndFloat 12s linear infinite; /* ใช้ timing-function เป็น linear */
+    }
+
+    /* ปรับแอนิเมชันให้ลื่นไหล */
+    @keyframes sailAndFloat {
+      0% {
+        transform: translate(-150px, 0px); /* เริ่มจากด้านซ้าย */
+      }
+      25% {
+        transform: translate(30vw, -30px); /* ลอยขึ้นเล็กน้อย */
+      }
+      50% {
+        transform: translate(60vw, 0px); /* กลับมาที่ระดับปกติ */
+      }
+      75% {
+        transform: translate(90vw, 30px); /* ลอยลงเล็กน้อย */
+      }
+      100% {
+        transform: translate(120vw, 0px); /* ไปจนถึงขวาสุด */
+      }
+    }
+
+    
+  </style>
+</head>
+<body class="day">
+  <div class="container">
+    <h1>Welcome to Time Attendance</h1>
+    <p>Manage your employee attendance with ease and precision. Start your journey with our platform today.</p>
+    <a href="auth.html" class="btn">Get Started</a>
+    <!-- ดาว -->
+    <div class="stars"></div>
+
+    <!-- ดวงจันทร์ -->
+    <div class="moon"></div>
+  </div>
+
+  <!-- คลื่น -->
+  <div class="wave-container">
+    <svg class="wave wave-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 200" preserveAspectRatio="none">
+      <path d="M0,100 C150,200 350,0 600,100 C850,200 1050,0 1200,100 L1200,200 L0,200 Z"></path>
+    </svg>
+    <svg class="wave wave-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 200" preserveAspectRatio="none">
+      <path d="M0,100 C150,0 350,200 600,100 C850,0 1050,200 1200,100 L1200,200 L0,200 Z"></path>
+    </svg>
+
+    <!-- เรือ -->
+    <img src="../assets/image/ship2.png" class="ship" alt="Ship">
+  </div>
+  <script>
+    // เพิ่มดาวในฉาก
+    function createStars() {
+      const starsContainer = document.querySelector('.stars');
+      for (let i = 0; i < 100; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.left = Math.random() * 100 + '%';
+        starsContainer.appendChild(star);
+      }
+    }
+
+    // เปลี่ยนธีมกลางวัน/กลางคืน
+    function toggleDayNight() {
+      document.body.classList.toggle('day');
+      document.body.classList.toggle('night');
+    }
+
+    // สลับธีมทุกๆ 30 วินาที
+    createStars();
+    setInterval(toggleDayNight, 30000); // ทุกๆ 30 วินาที
+  </script>
+</body>
+</html>

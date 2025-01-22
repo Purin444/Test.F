@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance History</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="/frontend/js/logout.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+   <div id="navbarContainer"></div>
+   <div class="dashboard-container">
+       <div id="sidebar"></div>
+        <main class="dashboard-content">
+            <h2>Attendance History</h2>
+
+            <div class="filter-container">
+                <div class="filter-item">
+                  <label for="startDate">Start Date:</label>
+                  <input type="date" id="startDate" />
+                </div>
+                <div class="filter-item">
+                  <label for="endDate">End Date:</label>
+                  <input type="date" id="endDate" />
+                </div>
+              </div>
+              
+              <div class="attendance-table-container">
+              <table class="attendance-log-table">
+                <thead>
+                  <tr>
+                    <th>User ID</th>
+                    <th>Timestamp</th>
+                    <th>Device IP</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="4" style="text-align: center;">No data available</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+           
+        </main>
+    </div>
+    
+    <script src="/frontend/js/attendance_history.js"></script>
+    <script src="/frontend/js/fetch.js"></script>
+    
+</body>
+</html>

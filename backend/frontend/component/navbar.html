@@ -1,0 +1,24 @@
+<nav>
+    <div class="container-bar">
+        <button id="logoutButton" class="logout-btn">Log out</button>
+        <div class="logo-bar">
+            <img src="../assets/image/logo.png" alt="MSC people" class="logo" style="width: 100px; height: auto; padding-right: 1rem;">
+        </div>
+    </div>
+</nav>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const logoutButton = document.getElementById("logoutButton");
+        if (logoutButton) {
+            console.log("Logout button found:", logoutButton);
+            logoutButton.addEventListener("click", () => {
+                console.log("Logout button clicked");
+                localStorage.removeItem("authToken");
+                sessionStorage.clear();
+                window.location.href = "../html/auth.html";
+            });
+        } else {
+            console.error("Logout button not found in the DOM");
+        }
+    });
+</script>

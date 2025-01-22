@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OT Request</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="/frontend/js/new_ot_request.js"></script>
+    <script src="/frontend/js/logout.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+   <div id="navbarContainer"></div>
+   <div class="dashboard-container">
+       <div id="sidebar"></div>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <h2>Request for OT Permission</h2>
+            <form id="otRequestForm">
+                <div class="form-group">
+                    <label for="employeeName">Employee Name:</label>
+                    <select id="employeeName" required>
+                        <option value="">-- Select Employee --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="reason">Reason for OT:</label>
+                    <textarea id="reason" rows="4" placeholder="Provide a brief reason" required></textarea>
+                </div>
+                <button type="button" id="saveButton" class="btn-submit">Save</button>
+            </form>
+            <div id="notification" style="display: none; margin-top: 20px; color: red;"></div>
+            
+            <!-- ตารางแสดงข้อมูล -->
+            <h3>Saved OT Requests</h3>
+            <table style="width:100%; margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th>Employee Name</th>
+                        <th>Date</th>
+                        <th>Reason</th>
+                        <th>Accept</th>
+                    </tr>
+                </thead>
+                <tbody id="otRequestTable">
+                    <!-- ข้อมูลที่ถูกบันทึกจะถูกแสดงที่นี่ -->
+                </tbody>
+            </table>
+
+            <h3>Accepted OT Requests</h3>
+            <button id="deleteButton">Delete Selected</button>
+            <table style="width:100%; margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="selectAll" checked></th>
+                        <th>Employee Name</th>
+                        <th>Date</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody id="acceptedOtRequestTable">
+                    <tr>
+                        <td colspan="4" style="text-align: center;">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+ 
+    
+</body>
+</html>
