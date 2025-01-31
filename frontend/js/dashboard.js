@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchDashboardData();
 
   // อัปเดตข้อมูลทุก 5 วินาที
-  setInterval(fetchDashboardData, 5000);
+  setInterval(fetchDashboardData, 10000);
 });
 
 function fetchDashboardOTRequests() {

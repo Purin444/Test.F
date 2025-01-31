@@ -10,7 +10,7 @@ DEVICE_IPS = [
 
 def connect_zk(ip):
     """ เชื่อมต่อ ZKTeco """
-    zk = ZK(ip, port=4370, timeout=5)
+    zk = ZK(ip, port=4370, timeout=1)  # ลดเวลารอให้เหลือ 1 วินาที
     try:
         conn = zk.connect()
         conn.disable_device()
@@ -52,8 +52,9 @@ def fetch_attendance_logs():
     # บันทึกข้อมูลลง MongoDB
     try:
         attendance_collection = mongo.db.attendance
-        attendance_collection.delete_many({})  # ลบข้อมูลเก่า
+        
         if all_logs:
+            attendance_collection.delete_many({})
             attendance_collection.insert_many(all_logs)
             print(f"Inserted {len(all_logs)} attendance logs into MongoDB.")
 
