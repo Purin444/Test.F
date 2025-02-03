@@ -1,76 +1,102 @@
+import time
 from zk import ZK
 from extensions import mongo
+import os
+import platform
 
-# รายการ IP ของอุปกรณ์ ZKTeco
-DEVICE_IPS = [
-    '192.168.1.220',
-    # '192.168.1.221',  # เพิ่ม IP อุปกรณ์ที่สอง
-    # '192.168.1.222',  # เพิ่ม IP อุปกรณ์ที่สาม
-]
+DEVICE_IPS = ['192.168.1.220']
+
+# ✅ ใช้ Dictionary เก็บผล Ping เพื่อป้องกัน Ping ซ้ำ
+ping_status = {}
+
+def is_device_reachable(ip):
+    if ip in ping_status:
+        return ping_status[ip]  # ✅ ใช้ค่าที่เคย Ping แล้ว
+    param = "-n 1" if platform.system().lower() == "windows" else "-c 1"
+    response = os.system(f"ping {param} {ip} > nul 2>&1") 
+    ping_status[ip] = response == 0  # ✅ เก็บค่า Ping ไว้ใช้ซ้ำ
+    return ping_status[ip]
 
 def connect_zk(ip):
-    """ เชื่อมต่อ ZKTeco """
-    zk = ZK(ip, port=4370, timeout=1)  # ลดเวลารอให้เหลือ 1 วินาที
+    if not is_device_reachable(ip):
+        print(f"❌ Skipping {ip} due to ping failure. (connect_zk)")
+        return None
+    zk = ZK(ip, port=4370, timeout=1)
     try:
         conn = zk.connect()
         conn.disable_device()
-        print(f"Connected to ZKTeco device at {ip}")
+        print(f"✅ Connected to ZKTeco at {ip}")
         return conn
     except Exception as e:
-        print(f"Error connecting to ZK device at {ip}: {e}")
+        print(f"⚠️ Error connecting to ZK device at {ip}: {e}")
         return None
 
-def fetch_attendance_logs():
-    """ ดึงข้อมูล Attendance สดจากหลาย ZKTeco และบันทึกลง MongoDB """
+def fetch_attendance_logs(start_date=None, end_date=None):
+    """ ✅ รองรับ `start_date` และ `end_date` ถ้ามี """
     all_logs = []
     for ip in DEVICE_IPS:
+        if not is_device_reachable(ip):
+            print(f"❌ Skipping {ip} due to ping failure. (fetch_attendance_logs)")
+            continue
+
+        time.sleep(2)  # ✅ หน่วงเวลาก่อนเชื่อมต่อใหม่
+
         conn = connect_zk(ip)
         if conn:
             try:
-                # ดึงข้อมูล Attendance จากอุปกรณ์
                 logs = conn.get_attendance()
-                if not logs:
-                    print(f"No attendance logs found on device at {ip}.")
-                else:
-                    print(f"Fetched {len(logs)} attendance logs from device at {ip}.")
+                if logs:
+                    print(f"✅ Fetched {len(logs)} attendance logs from {ip}.")
                     for log in logs:
                         all_logs.append({
                             'user_id': log.user_id,
                             'timestamp': log.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
                             'status': log.punch,
-                            'device_ip': ip  # เพิ่ม IP ของอุปกรณ์ในข้อมูล
+                            'device_ip': ip
                         })
+                else:
+                    print(f"⚠️ No attendance logs found on {ip}.")
             except Exception as e:
-                print(f"Error fetching logs from device at {ip}: {e}")
+                print(f"⚠️ Error fetching logs from {ip}: {e}")
             finally:
                 conn.enable_device()
                 conn.disconnect()
-                print(f"Disconnected from ZKTeco device at {ip}.")
+                print(f"🔌 Disconnected from {ip}.")
         else:
-            print(f"Skipping device at {ip} due to connection issues.")
+            print(f"⚠️ Skipping {ip} due to connection issues. (fetch_attendance_logs)")
 
-    # บันทึกข้อมูลลง MongoDB
+    # ✅ บันทึกใน MongoDB ถ้ามีข้อมูลใหม่
     try:
         attendance_collection = mongo.db.attendance
-        
         if all_logs:
             attendance_collection.delete_many({})
             attendance_collection.insert_many(all_logs)
-            print(f"Inserted {len(all_logs)} attendance logs into MongoDB.")
+            print(f"✅ Inserted {len(all_logs)} logs into MongoDB.")
 
-        # แปลง ObjectId และดึงข้อมูลคืนจาก MongoDB
-        attendance_from_db = attendance_collection.find()
+        # ✅ สร้าง Query ตาม `start_date` และ `end_date`
+        query = {}
+        if start_date and end_date:
+            query["timestamp"] = {
+                "$gte": f"{start_date} 00:00:00",
+                "$lte": f"{end_date} 23:59:59"
+            }
+            print(f"📌 Filtering attendance between {start_date} and {end_date}")
+
+        attendance_from_db = attendance_collection.find(query)
+
         response_data = [
             {
                 "_id": str(att["_id"]),
                 "user_id": att["user_id"],
                 "timestamp": att["timestamp"],
                 "status": att["status"],
-                "device_ip": att.get("device_ip")  # เพิ่ม IP ของอุปกรณ์ในผลลัพธ์
+                "device_ip": att.get("device_ip")
             }
             for att in attendance_from_db
         ]
+        print(f"✅ Retrieved {len(response_data)} attendance logs from MongoDB.")
         return response_data, 200
+
     except Exception as e:
-        print(f"Error updating MongoDB: {e}")
+        print(f"❌ Error updating MongoDB: {e}")
         return {"error": str(e)}, 500

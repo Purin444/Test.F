@@ -21,16 +21,13 @@ function fetchUsersAndAttendanceOnDateChange() {
     return; // หยุดถ้ายังไม่ได้เลือกวันที่
   }
 
-  fetch("http://127.0.0.1:5001/api/attendance")
+  // เรียก API พร้อม Query Parameters
+  fetch(`http://127.0.0.1:5001/api/attendance?start=${startDate}&end=${endDate}`)
     .then(response => {
       if (!response.ok) throw new Error("Failed to fetch attendance logs");
       return response.json();
     })
     .then(attendanceLogs => {
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-      end.setHours(23, 59, 59, 999); // เพิ่มเวลาให้ถึงสิ้นสุดวัน
-
       // ตรวจสอบว่าเจอ tbody หรือไม่
       const attendanceTableBody = document.querySelector(".attendance-log-table tbody");
       if (!attendanceTableBody) {
@@ -41,14 +38,8 @@ function fetchUsersAndAttendanceOnDateChange() {
       // ล้างข้อมูลเก่า
       attendanceTableBody.innerHTML = "";
 
-      // กรองข้อมูลตามวันที่
-      const filteredLogs = attendanceLogs.filter(log => {
-        const logDate = new Date(log.timestamp);
-        return logDate >= start && logDate <= end;
-      });
-
-      if (filteredLogs.length > 0) {
-        filteredLogs.forEach(log => {
+      if (attendanceLogs.length > 0) {
+        attendanceLogs.forEach(log => {
           const row = document.createElement("tr");
           row.innerHTML = `
             <td>${log.user_id}</td>
@@ -76,7 +67,6 @@ function fetchUsersAndAttendanceOnDateChange() {
 document.getElementById("startDate").addEventListener("change", fetchUsersAndAttendanceOnDateChange);
 document.getElementById("endDate").addEventListener("change", fetchUsersAndAttendanceOnDateChange);
 
-// ตั้งค่าวันที่ล่าสุดเมื่อหน้าโหลด
 document.addEventListener("DOMContentLoaded", () => {
   const today = new Date();
   const formattedDate = today.toISOString().split("T")[0];
@@ -85,9 +75,5 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("endDate").value = formattedDate;
 
   // เรียกข้อมูลทันทีเมื่อโหลดหน้า
-  fetchUsersAndAttendanceOnDateChange();
-});
-
-document.addEventListener("DOMContentLoaded", () => {
   fetchUsersAndAttendanceOnDateChange();
 });
