@@ -1,14 +1,15 @@
+import time
 from zk import ZK
 from extensions import mongo
 import os
 import platform
-import time
 
 # รายการ IP ของอุปกรณ์ ZKTeco
 DEVICE_IPS = ['192.168.1.220']
 
 ping_status = {}  # ✅ เก็บผลลัพธ์ Ping
 
+# ฟังก์ชันเช็คว่าอุปกรณ์ ZKTeco เข้าถึงได้ไหม
 def is_device_reachable(ip):
     if ip in ping_status:
         return ping_status[ip]  # ✅ ใช้ค่าที่เคย Ping แล้ว
@@ -17,12 +18,12 @@ def is_device_reachable(ip):
     ping_status[ip] = response == 0  # ✅ เก็บค่า Ping ไว้ใช้ซ้ำ
     return ping_status[ip]
 
-# ✅ ฟังก์ชันเชื่อมต่อ ZKTeco
+# ฟังก์ชันเชื่อมต่อกับ ZKTeco
 def connect_zk(ip):
     if not is_device_reachable(ip):  # ✅ เช็ค Ping ก่อนเชื่อมต่อ
         print(f"❌ Skipping {ip} due to ping failure. (connect_zk)")
         return None
-    zk = ZK(ip, port=4370, timeout=1)
+    zk = ZK(ip, port=4370, timeout=1)  # ตั้งค่า Timeout ให้ต่ำสุด (1 วินาที)
     try:
         conn = zk.connect()
         conn.disable_device()
@@ -32,6 +33,7 @@ def connect_zk(ip):
         print(f"⚠️ Error connecting to ZK device at {ip}: {e}")
         return None
 
+# ฟังก์ชันดึงข้อมูลผู้ใช้จาก ZKTeco
 def fetch_users():
     all_users = []
     zk_connection_failed = True  # ✅ กำหนดค่าเริ่มต้นก่อนใช้ตัวแปรนี้
@@ -76,7 +78,7 @@ def fetch_users():
                 )
             print(f"✅ Updated {len(all_users)} users in MongoDB.")
 
-        # ✅ เช็คเงื่อนไขนี้อย่างปลอดภัย เพราะ `zk_connection_failed` มีค่าเริ่มต้นแล้ว
+        # ถ้า ZKTeco ไม่เชื่อมต่อ ใช้ข้อมูลจาก MongoDB ทันที
         if zk_connection_failed:
             print("⚠️ Using data from MongoDB due to ZKTeco connection issues.")
             users_from_db = users_collection.find()

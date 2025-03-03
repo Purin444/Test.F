@@ -38,91 +38,89 @@ function getTimeFromTimestamp(dateStr) {
 
 // ดึงข้อมูล Dashboard
 function fetchDashboardData() {
-  fetchData('http://127.0.0.1:5001/api/users')
-    .then(userData => {
-      if (!userData || userData.length === 0) {
-        console.error('No users found');
-        return;
+  // ใช้ Promise.all เพื่อดึงข้อมูลหลายๆ ตัวพร้อมกัน
+  Promise.all([
+    fetchData('http://127.0.0.1:5001/api/users'),
+    fetchData('http://127.0.0.1:5001/api/attendance')
+  ])
+  .then(([userData, attendanceData]) => {
+    if (!userData || userData.length === 0) {
+      console.error('No users found');
+      return;
+    }
+
+    if (!attendanceData || attendanceData.length === 0) {
+      console.error('No attendance data found');
+      return;
+    }
+
+    // Map User ID เป็นชื่อ
+    const userMap = {};
+    userData.forEach(user => {
+      userMap[user.user_id] = user.name || "No Name";
+    });
+
+    const totalEmployees = userData.length;
+
+    // กรองข้อมูลวันนี้จาก attendanceData
+    const today = new Date().toISOString().split('T')[0];
+    const todaysLogs = attendanceData.filter(log => formatDate(log.timestamp) === today);
+
+    const tableBody = document.getElementById("attendance-log-table");
+    tableBody.innerHTML = ""; // เคลียร์ตาราง
+
+    let onTimeCount = 0;
+    let lateCount = 0;
+    let absentCount = totalEmployees;
+
+    const checkedOutUsers = new Set(); // เก็บ User ID ที่ Check-Out แล้ว
+    const checkedInUsers = new Set(); // เก็บ User ID ที่ Check-In แล้ว
+
+    todaysLogs.forEach(log => {
+      const checkInTime = getTimeFromTimestamp(log.timestamp);
+
+      if (log.status === 0) { // Check-In
+        if (!checkedInUsers.has(log.user_id)) {
+          checkedInUsers.add(log.user_id);
+          absentCount--; // ลดจำนวน Absent
+          onTimeCount++;
+          if (checkInTime <= 9 * 60) {
+            onTimeCount++; // เช็คอินก่อน 9:00 AM
+          } else {
+            lateCount++;
+          }
+        }
       }
 
-      // Map User ID เป็นชื่อ
-      const userMap = {};
-      userData.forEach(user => {
-        userMap[user.user_id] = user.name || "No Name";
-      });
-
-      const totalEmployees = userData.length;
-
-      fetchData('http://127.0.0.1:5001/api/attendance')
-        .then(attendanceData => {
-          if (!attendanceData || attendanceData.length === 0) {
-            console.error('No attendance data found');
-            return;
+      if (log.status === 1) { // Check-Out
+        if (!checkedOutUsers.has(log.user_id) && checkedInUsers.has(log.user_id)) {
+          checkedOutUsers.add(log.user_id);
+          if (onTimeCount > 0) {
+            onTimeCount--;
           }
+        }
+      }
 
-          // ดึงข้อมูลเฉพาะของวันนี้
-          const today = new Date().toISOString().split('T')[0];
-          const todaysLogs = attendanceData.filter(log => formatDate(log.timestamp) === today);
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${log.user_id}</td>
+        <td>${userMap[log.user_id] || "No Name"}</td>
+        <td>${log.timestamp}</td>
+        <td>${mapStatus(log.status)}</td>
+      `;
+      tableBody.appendChild(row);
+    });
 
-          const tableBody = document.getElementById("attendance-log-table");
-          tableBody.innerHTML = ""; // เคลียร์ตาราง
-
-          let onTimeCount = 0;
-          let lateCount = 0;
-          let absentCount = totalEmployees;
-
-          const checkedOutUsers = new Set(); // เก็บ User ID ที่ Check-Out แล้ว
-          const checkedInUsers = new Set(); // เก็บ User ID ที่ Check-In แล้ว
-          
-          todaysLogs.forEach(log => {
-              const checkInTime = getTimeFromTimestamp(log.timestamp);
-          
-              if (log.status === 0) { // Check-In
-                  // เพิ่มเฉพาะ Check-In ครั้งแรก
-                  if (!checkedInUsers.has(log.user_id)) {
-                      checkedInUsers.add(log.user_id); // บันทึกว่า User นี้ Check-In
-                      absentCount--; // ลดจำนวน Absent
-                      onTimeCount++;
-                      if (checkInTime <= 9 * 60) { // เช็คอินก่อน 9:00 AM
-                          onTimeCount++; // เพิ่มค่า On Time
-                      } else {
-                          lateCount++; // ถ้ามาสาย
-                      }
-                  }
-              }
-          
-              if (log.status === 1) { // Check-Out
-                  // ลด On Time เพียงครั้งเดียว ถ้า User มี Check-In และ On Time ถูกนับไว้แล้ว
-                  if (!checkedOutUsers.has(log.user_id) && checkedInUsers.has(log.user_id)) {
-                      checkedOutUsers.add(log.user_id); // บันทึกว่า User นี้ Check-Out แล้ว
-                    
-                      if (onTimeCount > 0) {
-                          onTimeCount--; // ลดค่า On Time
-                      }
-                  }
-              }
-          
-              // เพิ่มข้อมูลในตาราง
-              const row = document.createElement("tr");
-              row.innerHTML = `
-                  <td>${log.user_id}</td>
-                  <td>${userMap[log.user_id] || "No Name"}</td>
-                  <td>${log.timestamp}</td>
-                  <td>${mapStatus(log.status)}</td>
-              `;
-              tableBody.appendChild(row);
-          });
-          // อัปเดตข้อมูลสรุป
-          document.getElementById("total-employees").innerHTML = `${totalEmployees}<br><span>Total Employee</span>`;
-          document.getElementById("on-time").innerHTML = `${onTimeCount}<br><span>On Time</span>`;
-          document.getElementById("late").innerHTML = `${lateCount}<br><span>Late</span>`;
-          document.getElementById("absent").innerHTML = `${absentCount}<br><span>Absent</span>`;
-          
-        })
-        .catch(error => console.error('Error fetching attendance logs:', error));
-    })
-    .catch(error => console.error('Error fetching users:', error));
+    document.getElementById("total-employees").innerHTML = `${totalEmployees}<br><span>Total Employee</span>`;
+    document.getElementById("on-time").innerHTML = `${onTimeCount}<br><span>On Time</span>`;
+    document.getElementById("late").innerHTML = `${lateCount}<br><span>Late</span>`;
+    document.getElementById("absent").innerHTML = `${absentCount}<br><span>Absent</span>`;
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+  });
 }
+
 
 // เริ่มการทำงานเมื่อโหลดหน้า
 document.addEventListener("DOMContentLoaded", () => {

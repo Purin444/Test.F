@@ -9,6 +9,7 @@ DEVICE_IPS = ['192.168.1.220']
 # ✅ ใช้ Dictionary เก็บผล Ping เพื่อป้องกัน Ping ซ้ำ
 ping_status = {}
 
+# ฟังก์ชันเช็คว่าอุปกรณ์ ZKTeco เข้าถึงได้ไหม
 def is_device_reachable(ip):
     if ip in ping_status:
         return ping_status[ip]  # ✅ ใช้ค่าที่เคย Ping แล้ว
@@ -17,11 +18,12 @@ def is_device_reachable(ip):
     ping_status[ip] = response == 0  # ✅ เก็บค่า Ping ไว้ใช้ซ้ำ
     return ping_status[ip]
 
+# ฟังก์ชันเชื่อมต่อกับ ZKTeco
 def connect_zk(ip):
-    if not is_device_reachable(ip):
+    if not is_device_reachable(ip):  # ✅ เช็ค Ping ก่อนเชื่อมต่อ
         print(f"❌ Skipping {ip} due to ping failure. (connect_zk)")
         return None
-    zk = ZK(ip, port=4370, timeout=1)
+    zk = ZK(ip, port=4370, timeout=0.3)  # ปรับ timeout ให้เร็วขึ้น
     try:
         conn = zk.connect()
         conn.disable_device()
@@ -31,16 +33,18 @@ def connect_zk(ip):
         print(f"⚠️ Error connecting to ZK device at {ip}: {e}")
         return None
 
+# ฟังก์ชันดึงข้อมูล Attendance Logs
 def fetch_attendance_logs(start_date=None, end_date=None):
     """ ✅ รองรับ `start_date` และ `end_date` ถ้ามี """
     all_logs = []
     for ip in DEVICE_IPS:
+        print(f"🔍 Checking device at {ip}")  # เพิ่ม debug line
         if not is_device_reachable(ip):
             print(f"❌ Skipping {ip} due to ping failure. (fetch_attendance_logs)")
-            continue
-
+            continue  # ✅ ข้ามไปเลย ไม่ต้องเสียเวลาพยายามเชื่อมต่อ
+        
         time.sleep(2)  # ✅ หน่วงเวลาก่อนเชื่อมต่อใหม่
-
+        
         conn = connect_zk(ip)
         if conn:
             try:
@@ -100,3 +104,4 @@ def fetch_attendance_logs(start_date=None, end_date=None):
     except Exception as e:
         print(f"❌ Error updating MongoDB: {e}")
         return {"error": str(e)}, 500
+
